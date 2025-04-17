@@ -1,0 +1,107 @@
+JOB-MATCHING-API/
+├── dist/                       # Compiled code
+├── node_modules/               # Dependencies
+├── src/
+│   ├── config/                 # Configuration files
+│   │   ├── database.ts         # Database connection config
+│   │   ├── passport.ts         # Authentication strategies
+│   │   └── app.ts              # App configuration
+│   │
+│   ├── controllers/            # Request handlers
+│   │   ├── auth.controller.ts
+│   │   ├── jobSeeker.controller.ts
+│   │   ├── employer.controller.ts
+│   │   ├── job.controller.ts
+│   │   ├── application.controller.ts
+│   │   ├── skill.controller.ts
+│   │   ├── interview.controller.ts
+│   │   ├── messaging.controller.ts
+│   │   ├── notification.controller.ts
+│   │   └── admin.controller.ts
+│   │
+│   ├── middlewares/            # Custom middleware
+│   │   ├── auth.middleware.ts  # Authentication middleware
+│   │   ├── error.middleware.ts # Error handling
+│   │   ├── upload.middleware.ts # For CV/portfolio uploads
+│   │   ├── validation.middleware.ts # Request validation
+│   │   └── logger.middleware.ts
+│   │
+│   ├── models/                 # Data models
+│   │   ├── user.model.ts       # Base user model
+│   │   ├── userType.model.ts   # User type definitions
+│   │   ├── jobSeeker.model.ts  # Job seeker profile
+│   │   ├── employer.model.ts   # Employer profile
+│   │   ├── skill.model.ts      # Skills & proficiency
+│   │   ├── job.model.ts        # Job postings
+│   │   ├── application.model.ts # Job applications
+│   │   ├── interview.model.ts  # Interviews
+│   │   ├── message.model.ts    # Messages/chats
+│   │   └── notification.model.ts # Notifications
+│   │
+│   ├── routes/                 # API routes
+│   │   ├── auth.routes.ts      # Authentication routes
+│   │   ├── jobSeeker.routes.ts # Job seeker routes
+│   │   ├── employer.routes.ts  # Employer routes
+│   │   ├── job.routes.ts       # Job posting routes
+│   │   ├── application.routes.ts # Application routes
+│   │   ├── skill.routes.ts     # Skills management
+│   │   ├── interview.routes.ts # Interview management
+│   │   ├── messaging.routes.ts # Messaging routes
+│   │   ├── notification.routes.ts # Notification routes
+│   │   ├── admin.routes.ts     # Admin routes
+│   │   └── index.ts            # Route aggregator
+│   │
+│   ├── services/               # Business logic
+│   │   ├── auth.service.ts     # Authentication service
+│   │   ├── jobSeeker.service.ts # Job seeker services
+│   │   ├── employer.service.ts # Employer services
+│   │   ├── job.service.ts      # Job posting services
+│   │   ├── matching.service.ts # AI matching algorithm
+│   │   ├── skill.service.ts    # Skills management
+│   │   ├── application.service.ts # Application processing
+│   │   ├── interview.service.ts # Interview scheduling
+│   │   ├── messaging.service.ts # Chat/messaging
+│   │   ├── notification.service.ts # Notifications
+│   │   ├── analytics.service.ts # Analytics for dashboard
+│   │   └── admin.service.ts    # Admin services
+│   │
+│   ├── utils/                  # Utility functions
+│   │   ├── index.ts            # General utilities
+│   │   ├── validators.ts       # Validation helpers
+│   │   ├── formatters.ts       # Data formatting
+│   │   ├── emailTemplates.ts   # Email templates
+│   │   └── aiHelpers.ts        # AI processing helpers
+│   │
+│   ├── ai/                     # AI-related code
+│   │   ├── matchingAlgorithm.ts # Job matching algorithm
+│   │   ├── skillsAnalysis.ts   # Skills gap analysis
+│   │   ├── careerPathPrediction.ts # Career path recommendations
+│   │   └── trainingUtils.ts    # AI training utilities
+│   │
+│   └── index.ts                # Application entry point
+│
+├── tests/                      # Test files
+│   ├── unit/                   # Unit tests
+│   │   ├── services/
+│   │   ├── controllers/
+│   │   └── models/
+│   │
+│   ├── integration/            # Integration tests
+│   │   ├── auth.test.ts
+│   │   ├── jobSeeker.test.ts
+│   │   └── employer.test.ts
+│   │
+│   └── fixtures/               # Test data
+│
+├── .dockerignore
+├── .env                        # Environment variables
+├── .env.example                # Example environment variables
+├── .gitignore
+├── docker-compose.yml          # Docker configuration
+├── Dockerfile                  # For containerization
+├── Dockerfile.dev              # Development container
+├── dump.sql                    # Initial database schema
+├── package-lock.json
+├── package.json                # Dependencies and scripts
+├── README.md                   # Project documentation
+└── tsconfig.json               # TypeScript configuration

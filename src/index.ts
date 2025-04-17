@@ -12,6 +12,7 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
+
 // Routes - use the router correctly
 app.use('/api', routes);
 
