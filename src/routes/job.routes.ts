@@ -13,7 +13,7 @@ router.get('/search', JobController.searchJobs);
 router.get('/recommended', JobController.getRecommendedJobs);
 
 // Job details
-router.get('/:id', JobController.getJobById);
+router.get('/job/:id', JobController.getJobById);
 
 // Saved jobs
 router.get('/saved', JobController.getSavedJobs);

@@ -1,9 +1,10 @@
 // src/controllers/job.controller.ts
-import { Request, Response } from 'express';
+import { Response } from 'express';
 import { JobService } from '../services/job.service';
+import { AuthRequest } from '../interfaces/auth.interface';
 
 export class JobController {
-  static async searchJobs(req: Request, res: Response): Promise<void> {
+  static async searchJobs(req: AuthRequest, res: Response): Promise<void> {
     try {
       const {
         title,
@@ -39,6 +40,7 @@ export class JobController {
         success: true,
         data: jobs
       });
+      return;
     } catch (error) {
       console.error('Error in searchJobs controller:', error);
       res.status(500).json({
@@ -46,11 +48,13 @@ export class JobController {
         message: 'Failed to search jobs',
         error: error instanceof Error ? error.message : 'Unknown error'
       });
+      return;
     }
   }
 
-  static async getJobById(req: Request, res: Response): Promise<void> {
+  static async getJobById(req: AuthRequest, res: Response): Promise<void> {
     try {
+      console.log('Request parameters:', req.params);
       const jobId = parseInt(req.params.id);
       const job = await JobService.getJobById(jobId);
       
@@ -66,6 +70,7 @@ export class JobController {
         success: true,
         data: job
       });
+      return;
     } catch (error) {
       console.error('Error in getJobById controller:', error);
       res.status(500).json({
@@ -73,18 +78,26 @@ export class JobController {
         message: 'Failed to get job details',
         error: error instanceof Error ? error.message : 'Unknown error'
       });
+      return;
     }
   }
 
-  static async getSavedJobs(req: Request, res: Response): Promise<void> {
+  static async getSavedJobs(req: AuthRequest, res: Response): Promise<void> {
     try {
-      const userId = (req as any).user.id;
-      const savedJobs = await JobService.getSavedJobs(userId);
+      if (!req.user) {
+        res.status(401).json({ message: 'Authentication required' });
+        return;
+      }
+
+      console.log('User object from request:', req.user);
+      console.log('User ID being used:', req.user.userId);
+      const savedJobs = await JobService.getSavedJobs(req.user.userId);
       
       res.status(200).json({
         success: true,
         data: savedJobs
       });
+      return;
     } catch (error) {
       console.error('Error in getSavedJobs controller:', error);
       res.status(500).json({
@@ -92,20 +105,31 @@ export class JobController {
         message: 'Failed to get saved jobs',
         error: error instanceof Error ? error.message : 'Unknown error'
       });
+      return;
     }
   }
 
-  static async saveJob(req: Request, res: Response): Promise<void> {
+  static async saveJob(req: AuthRequest, res: Response): Promise<void> {
     try {
-      const userId = (req as any).user.id;
+      if (!req.user) {
+        res.status(401).json({ message: 'Authentication required' });
+        return;
+      }
+  
+      // Log the user object for debugging
+      console.log('User object from request:', req.user);
+      console.log('User ID being used:', req.user.userId);
+  
       const jobId = parseInt(req.params.id);
+      console.log('Job ID being used:', jobId);
       
-      const success = await JobService.saveJob(userId, jobId);
+      const success = await JobService.saveJob(req.user.userId, jobId);
       
       res.status(200).json({
         success: true,
         message: 'Job saved successfully'
       });
+      return;
     } catch (error) {
       console.error('Error in saveJob controller:', error);
       res.status(500).json({
@@ -113,15 +137,20 @@ export class JobController {
         message: 'Failed to save job',
         error: error instanceof Error ? error.message : 'Unknown error'
       });
+      return;
     }
   }
 
-  static async unsaveJob(req: Request, res: Response): Promise<void> {
+  static async unsaveJob(req: AuthRequest, res: Response): Promise<void> {
     try {
-      const userId = (req as any).user.id;
+      if (!req.user) {
+        res.status(401).json({ message: 'Authentication required' });
+        return;
+      }
+
       const jobId = parseInt(req.params.id);
       
-      const success = await JobService.unsaveJob(userId, jobId);
+      const success = await JobService.unsaveJob(req.user.userId, jobId);
       
       if (!success) {
         res.status(404).json({
@@ -135,6 +164,7 @@ export class JobController {
         success: true,
         message: 'Job removed from saved jobs'
       });
+      return;
     } catch (error) {
       console.error('Error in unsaveJob controller:', error);
       res.status(500).json({
@@ -142,20 +172,26 @@ export class JobController {
         message: 'Failed to remove job from saved jobs',
         error: error instanceof Error ? error.message : 'Unknown error'
       });
+      return;
     }
   }
 
-  static async getRecommendedJobs(req: Request, res: Response): Promise<void> {
+  static async getRecommendedJobs(req: AuthRequest, res: Response): Promise<void> {
     try {
-      const userId = (req as any).user.id;
+      if (!req.user) {
+        res.status(401).json({ message: 'Authentication required' });
+        return;
+      }
+
       const limit = req.query.limit ? parseInt(req.query.limit as string) : 10;
       
-      const recommendedJobs = await JobService.getRecommendedJobs(userId, limit);
+      const recommendedJobs = await JobService.getRecommendedJobs(req.user.userId, limit);
       
       res.status(200).json({
         success: true,
         data: recommendedJobs
       });
+      return;
     } catch (error) {
       console.error('Error in getRecommendedJobs controller:', error);
       res.status(500).json({
@@ -163,6 +199,7 @@ export class JobController {
         message: 'Failed to get recommended jobs',
         error: error instanceof Error ? error.message : 'Unknown error'
       });
+      return;
     }
   }
 }

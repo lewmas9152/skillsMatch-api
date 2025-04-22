@@ -73,7 +73,7 @@ export class JobModel {
 
   static async findById(id: number): Promise<Job | null> {
     try {
-      const result = await db.query('SELECT * FROM jobs WHERE id = $1', [id]);
+      const result = await db.query('SELECT * FROM jobs WHERE job_id = $1', [id]);
       if (result.rows.length === 0) {
         return null;
       }
@@ -87,9 +87,9 @@ export class JobModel {
   static async getJobSkills(jobId: number): Promise<any[]> {
     try {
       const query = `
-        SELECT js.id, s.name, s.category, js.importance
+        SELECT js.job_skill_id, s.skill_name, s.category_id, js.importance_level
         FROM job_skills js
-        JOIN skills s ON js.skill_id = s.id
+        JOIN skills s ON js.skill_id = s.skill_id
         WHERE js.job_id = $1
       `;
       const result = await db.query(query, [jobId]);
@@ -105,8 +105,8 @@ export class JobModel {
       const query = `
         SELECT j.* 
         FROM jobs j
-        JOIN saved_jobs sj ON j.id = sj.job_id
-        WHERE sj.user_id = $1 AND j.status = 'active'
+        JOIN saved_jobs sj ON j.job_id = sj.job_id
+        WHERE sj.user_id = $1 AND j.is_active = true
         ORDER BY sj.saved_date DESC
       `;
       const result = await db.query(query, [userId]);
